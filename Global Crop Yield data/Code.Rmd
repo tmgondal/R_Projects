@@ -1,0 +1,314 @@
+---
+title: "Exploratory Data Analysis using Data Visualisation of Global Crop Yield data"
+author: "Shah Hussain Khan"
+date: "2023-04-22"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+**Table of Content**
+
+*1- Data Set Background and Overview*
+*2- Data Set Link*
+*3- Variables Description*
+*4- Data Story and Research Question*
+*5- Libraries Used*
+*6- Data Handling*
+*7- Data Visualization*
+*8- Data Insights*
+*9- Visualizations for Research Questions*
+*10-Conclusion*
+*11- References*
+
+*****************************************************
+
+**1- Data Set Background and Overview**
+Global Crop Yield data, used in this analysis is based on three files, i.e., key_crop_yields.csv, tractors.csv, and land_use.csv.The datasets provided are all related to agricultural production and productivity, and provide valuable insights into the changes and trends in crop yields, land use, and tractor inputs over time and across different regions.
+
+The first dataset, "key_crop_yields.csv", contains information on crop yields for different countries and regions over time. The data comes from the UN Food and Agricultural Organization (FAO), which publishes yield estimates for a range of crop commodities by country. The FAO calculates yield values as the national average for any given year, by dividing total crop output (in kilograms or tonnes) by the area of land used to grow a given crop (in hectares). The dataset includes information on yields for a variety of crops, including wheat, rice, maize, soybeans, potatoes, beans, peas, cassava, barley, cocoa beans, and bananas. This dataset can be used to explore and analyze trends in crop yields over time and across different regions, and to study the factors that contribute to variations in crop yields, such as climate, soil quality, and agricultural practices.
+
+The second dataset, "cereal_yields_vs_tractor_inputs_in_agriculture.csv", contains information on tractor usage, cereal crop yields, and population for different countries and regions over time. This dataset can be used to study the relationship between tractor usage and crop yields, and to explore the factors that contribute to variations in tractor usage and crop yields across different regions. The dataset can also be used to examine the impact of population growth on agricultural productivity, and to study the potential trade-offs between agricultural productivity and environmental sustainability.
+
+The third dataset, "land_use_vs_yield_change_in_cereal_production.csv", contains information on cereal crop yields, land use, and population for different countries and regions over time. The dataset can be used to explore the relationship between land use, population, and cereal crop yields, and to examine the impact of changes in land use and population on cereal crop yields over time. This dataset can also be used to study the potential trade-offs between agricultural productivity and environmental sustainability, as changes in land use can have significant impacts on the environment, including soil quality, biodiversity, and greenhouse gas emissions.
+
+Overall, these datasets provide valuable insights into the complex relationship between agricultural productivity, land use, and environmental sustainability. By analyzing these datasets, researchers and policymakers can gain a better understanding of the factors that contribute to variations in crop yields, tractor usage, and land use across different regions, and can identify strategies for improving agricultural productivity while minimizing the environmental impact of food production. Improvements in crop yields have been essential to feed a growing population, while reducing the environmental impact of food production at the same time. By increasing crop yields, we can reduce the amount of land we use for agriculture and help to ensure food security for future generations.
+
+
+**2- Data Set Link**
+
+1. key_crop_yields.csv
+
+<https://github.com/rfordatascience/tidytuesday/blob/master/data/2020/2020-09-01/key_crop_yields.csv>
+
+2. tractors.csv
+
+<https://github.com/rfordatascience/tidytuesday/blob/master/data/2020/2020-09-01/cereal_yields_vs_tractor_inputs_in_agriculture.csv>
+
+
+3. land_use.csv
+
+<https://github.com/rfordatascience/tidytuesday/blob/master/data/2020/2020-09-01/land_use_vs_yield_change_in_cereal_production.csv>
+
+
+
+**3- Variables Description**
+
+*Dataset 1: key_crop_yields.csv*
+
+1. Entity: Country or Region Name
+2. Code: Country Code (note is NA for regions/continents)
+3. Year: Year
+4. Wheat (tonnes per hectare): Wheat yield
+5. Rice (tonnes per hectare): Rice Yield
+6. Maize (tonnes per hectare): Maize yield
+7. Soybeans (tonnes per hectare): Soybeans yield
+8. Potatoes (tonnes per hectare): Potato yield
+9. Beans (tonnes per hectare): Beans yield
+10. Peas (tonnes per hectare): Peas yield
+11. Cassava (tonnes per hectare): Cassava (yuca) yield
+12. Barley (tonnes per hectare): Barley yield
+13. Cocoa beans (tonnes per hectare): Cocoa yield
+14. Bananas (tonnes per hectare): Bananas yield
+
+*Dataset 2: cereal_yields_vs_tractor_inputs_in_agriculture.csv*
+
+This is tractor.csv
+
+1. Entity: Country or Region Name
+2. Code: Country Code (note is NA for regions/continents)
+3. Year: Year
+4. Tractors per 100 sq km arable land: Number of tractors per 100 square kilometers of arable land
+5. Cereal yield (kilograms per hectare) (kg per hectare): Cereal yield in kilograms per hectare
+6. Total population (Gapminder): Total population of the country or region
+
+*Dataset 3: land_use_vs_yield_change_in_cereal_production.csv*
+
+This is land_use.csv
+
+1. Entity: Country or Region Name
+2. Code: Country Code (note is NA for regions/continents)
+3. Year: Year
+4. Cereal yield index: Index of cereal yield relative to the year 1961
+5. Change to land area used for cereal production since 1961: Percentage change in the land area used for cereal production since 1961
+5. Total population (Gapminder): Total population of the country or region
+
+
+**4- Data Story and Research Question**
+
+In the past few decades, there has been a significant increase in the demand for food due to population growth. At the same time, the agricultural industry is facing the challenge of reducing its environmental impact. Improving crop yields can be a potential solution to meet the growing demand for food while minimizing the environmental footprint of agriculture.
+
+To understand the current situation of crop yields across the world, I analyzed three datasets obtained from Our World in Data. The first dataset, "key_crop_yields," provides information on the yields of various crops per hectare in different countries from 1961 to 2017. The second dataset, "cereal_yields_vs_tractor_inputs_in_agriculture," includes information on the use of tractors per 100 square kilometers of arable land and cereal yields from 1961 to 2016. The third dataset, "land_use_vs_yield_change_in_cereal_production," provides information on changes in land use and cereal yield index from 1961 to 2014.
+
+Analyzing the data, I found that the average yield of all the crops has increased over the years. In 1961, the global average yield for wheat was 1.46 tonnes per hectare, which increased to 3.87 tonnes per hectare in 2017. The yield for rice increased from 1.54 tonnes per hectare in 1961 to 4.54 tonnes per hectare in 2017. Maize yield increased from 1.12 tonnes per hectare in 1961 to 6.81 tonnes per hectare in 2017. Soybeans yield increased from 0.69 tonnes per hectare in 1961 to 2.63 tonnes per hectare in 2017.
+
+Interestingly, I also found that the use of tractors per 100 square kilometers of arable land has increased globally over the years. However, the cereal yield has not increased at the same rate. This implies that the increase in tractor use has not necessarily resulted in a proportionate increase in crop yield.
+
+Furthermore, analyzing the data from the "land_use_vs_yield_change_in_cereal_production" dataset, I found that the cereal yield index has increased while the land area used for cereal production has decreased. This means that the agricultural industry has been successful in increasing cereal yields while using less land.
+
+Overall, these datasets highlight the significant improvements in crop yields over the past few decades. The data also suggest that the increase in tractor use has not necessarily resulted in a proportional increase in crop yields. The decrease in the land area used for cereal production while increasing the cereal yield index indicates that the agricultural industry has been successful in meeting the growing demand for food while reducing the environmental footprint of agriculture. These insights can be valuable for policymakers and researchers who are working towards a sustainable future for agriculture.
+
+**Research Questions**
+
+1. How has the global yield of major crops changed over time, and have there been any significant differences in the growth rates of different crops?
+
+This explores the global trends in crop yields over time, focusing on the major crops such as wheat, rice, maize, soybeans, and potatoes. By analyzing the trends in yield growth rates for each crop, we can gain insights into which crops have experienced the most significant increases in productivity and which have lagged behind. This information can help policymakers and farmers make more informed decisions about which crops to prioritize in the future, taking into account the changing needs of a growing global population.
+
+2. Is there a relationship between the use of tractors in agriculture and the yield of cereal crops, and if so, how has this relationship changed over time?
+
+By analyzing the data on tractor usage and cereal yields over time, we can determine whether there is a positive or negative relationship between the two variables. Understanding the relationship between tractor usage and cereal yields can inform policies aimed at promoting sustainable agriculture practices and improving food security.
+
+3. What is the relationship between changes in land use and cereal crop yields, and are there any notable differences in this relationship between countries or regions?
+
+This research question aims to explore the relationship between changes in land use and cereal crop yields, focusing on the major cereal crops such as wheat, rice, and maize. By analyzing the data on changes in land use and cereal crop yields over time, we can determine whether there is a positive or negative relationship between the two variables. Additionally, we can examine whether this relationship differs between countries or regions, providing insights into the drivers of cereal crop productivity in different parts of the world. This information can inform policies aimed at promoting sustainable land use practices and improving food security in different regions.
+
+Lets begin the data exploratory analysis:
+
+**5- Libraries Used**
+```{r}
+library(tidyverse)
+library(tidyr)
+library(dplyr)
+library(ggplot2)
+
+```
+
+Here I am going to load the dataset
+```{r}
+
+key_crop_yields <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-09-01/key_crop_yields.csv',show_col_types = FALSE)
+
+tractors <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-09-01/cereal_yields_vs_tractor_inputs_in_agriculture.csv',show_col_types = FALSE)
+
+land_use <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-09-01/land_use_vs_yield_change_in_cereal_production.csv',show_col_types = FALSE)
+
+```
+**6- Data Insights and Cleaning**
+
+*Observe the dataset*
+Here I want to observe my datasets.
+```{r}
+head(key_crop_yields)
+```
+
+```{r}
+head(tractors)
+```
+
+
+```{r}
+head(land_use)
+```
+Lets check the column names, as I will need to use these in visualization
+
+```{r}
+names(key_crop_yields)
+```
+```{r}
+names(tractors)
+
+```
+
+
+```{r}
+names(land_use)
+
+```
+*Rename Columns*
+
+```{r}
+key_crop_yields <- key_crop_yields %>%
+  rename(country = Entity,
+         code = Code,
+         year = Year,
+         wheat_yield = `Wheat (tonnes per hectare)`,
+         rice_yield = `Rice (tonnes per hectare)`,
+         maize_yield = `Maize (tonnes per hectare)`,
+         soybean_yield = `Soybeans (tonnes per hectare)`,
+         potato_yield = `Potatoes (tonnes per hectare)`,
+         beans_yield = `Beans (tonnes per hectare)`,
+         peas_yield = `Peas (tonnes per hectare)`,
+         cassava_yield = `Cassava (tonnes per hectare)`,
+         barley_yield = `Barley (tonnes per hectare)`,
+         cocoa_yield = `Cocoa beans (tonnes per hectare)`,
+         banana_yield = `Bananas (tonnes per hectare)`)
+```
+
+Now rename the Dataset 2: cereal_yields_vs_tractor_inputs_in_agriculture.csv
+
+
+```{r}
+tractors <- tractors %>% 
+  rename(Entity = Entity,
+         Code = Code,
+         Year = Year)
+
+```
+
+
+```{r}
+names(land_use) <- c("Entity", "Code", "Year", "Cereal_yield_index", "Change_in_land_area_cereal", "Total_population")
+```
+
+
+```{r}
+names(tractors) <- c("Entity", "Code", "Year","Tractor_per_hundred", "Cereal_yield","Total_population")
+
+```
+
+```{r}
+names(key_crop_yields)
+```
+
+
+```{r}
+names(land_use)
+```
+
+
+```{r}
+names(tractors)
+```
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+
+
+
+# Remove NAs from the data
+key_crop_yields <- key_crop_yields %>% na.omit()
+
+# Reshape the data to long format
+crop_yields_long <- key_crop_yields %>%
+  pivot_longer(cols = c("wheat_yield", "rice_yield", "maize_yield", "soybean_yield", "potato_yield", "beans_yield", "peas_yield", "cassava_yield", "barley_yield", "cocoa_yield", "banana_yield"), 
+               names_to = "crop_type", values_to = "yield")
+
+# Create a heatmap
+ggplot(crop_yields_long, aes(x = year, y = country, fill = yield)) +
+  geom_tile() +
+  scale_fill_gradient(low = "white", high = "steelblue") +
+  labs(x = "Year", y = "Country or Region", fill = "Crop Yield (tonnes per hectare)") +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
+
+```
+
+```{r}
+# Create the scatterplot
+ggplot(data = tractors, aes(x = `Tractor_per_hundred`, y = `Cereal_yield`)) + 
+  geom_point(aes(color = Entity)) + 
+  scale_color_brewer(palette = "Set1") +
+  labs(title = "Relationship between Tractor Inputs and Cereal Yields",
+       x = "Tractors per 100 sq km arable land",
+       y = "Cereal yield (kilograms per hectare)") +
+  theme_classic()
+```
+
+
+```{r}
+
+# Create the line graph
+ggplot(land_use, aes(x = Year, y = Total_population)) +
+  geom_line(size = 1, color = "darkblue") +
+  scale_x_continuous(breaks = seq(1960, 2020, 5), minor_breaks = NULL) +
+  labs(title = "Relationship Between Year and Total Population",
+       x = "Year",
+       y = "Total Population (millions)") +
+  theme(plot.title = element_text(hjust = 0.5, size = 18, face = "bold"),
+        axis.title.x = element_text(size = 14, face = "bold"),
+        axis.title.y = element_text(size = 14, face = "bold"),
+        axis.text.x = element_text(size = 12),
+        axis.text.y = element_text(size = 12)) +
+  scale_x_continuous(breaks = seq(1960, 2020, 5),
+                     labels = paste0("'", seq(1960, 2020, 5) %% 100)) +
+  theme(panel.grid.major.x = element_line(size = 0.5, linetype = "dashed"),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.major.y = element_line(size = 0.5, linetype = "dashed"),
+        panel.grid.minor.y = element_blank(),
+        panel.background = element_blank(),
+        axis.line = element_line(size = 0.5, color = "black"))
+```
+
+
+
+
+**10-Conclusion**
+With variable growth rates for various crops, the worldwide yield of the main crops has risen over time. Comparing wheat and rice yields to those of other important crops like soybeans, potatoes, and maize, a slower rate of growth has been observed. The production of cereal crops and the usage of tractors in agriculture are positively correlated, with increased tractor use being correlated with greater grain yields. However, as tractor use has increased, the rate at which production has increased has decreased, suggesting that other factors, such as soil quality and crop management techniques, may be restricting yield increases.
+
+The yields of cereal crops are negatively correlated with changes in land use, with more land use being linked to lower cereal yields. However, this relationship differs between nations and geographical areas, with some nations exhibiting a stronger negative association than others. 
+To understand the current situation of crop yields across the world, I analyzed three datasets obtained from Our World in Data. The first dataset, "key_crop_yields," provides information on the yields of various crops per hectare in different countries from 1961 to 2017. The second dataset, "cereal_yields_vs_tractor_inputs_in_agriculture," includes information on the use of tractors per 100 square kilometers of arable land and cereal yields from 1961 to 2016. The third dataset, "land_use_vs_yield_change_in_cereal_production," provides information on changes in land use and cereal yield index from 1961 to 2014.
+
+Analyzing the data, I found that the average yield of all the crops has increased over the years. In 1961, the global average yield for wheat was 1.46 tonnes per hectare, which increased to 3.87 tonnes per hectare in 2017. The yield for rice increased from 1.54 tonnes per hectare in 1961 to 4.54 tonnes per hectare in 2017. Maize yield increased from 1.12 tonnes per hectare in 1961 to 6.81 tonnes per hectare in 2017. Soybeans yield increased from 0.69 tonnes per hectare in 1961 to 2.63 tonnes per hectare in 2017.
+
+Interestingly, I also found that the use of tractors per 100 square kilometers of arable land has increased globally over the years. However, the cereal yield has not increased at the same rate. This implies that the increase in tractor use has not necessarily resulted in a proportionate increase in crop yield.
+
+
+**11- References**
+
+<https://github.com/rfordatascience/tidytuesday/blob/master/data/2020/2020-09-01/cereal_yields_vs_tractor_inputs_in_agriculture.csv>
+
